@@ -34,12 +34,11 @@ def start_bot(username=None, password=None,
         print(f"Using agent: {user_agent}")
         if username:
             path_to_session = Path(home_dir, 'instaloader', "session-" + username)
-            if password:
+            if os.path.exists(path_to_session):
+                L.instance.load_session_from_file(username, path_to_session)
+            elif password:
                 L.instance.login(username, password)
                 L.instance.save_session_to_file(path_to_session)
-            if os.path.exists(path_to_session):
-                print(f"Load old session from {path_to_session}")
-                L.instance.load_session_from_file(username, path_to_session)
             else:
                 print(f"Can't find previous session file {path_to_session}")
                 print(f"Try starting bot without authentication to instagram")
